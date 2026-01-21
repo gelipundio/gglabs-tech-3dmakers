@@ -29,7 +29,7 @@ export default function Home() {
         />
         <LinkButton
           label="WhatsApp"
-          href="https://whatsapp.com"
+          href="https://wa.me/523313267354"
           target="_blank"
           icon={ChatIcon}
           delay={300}
