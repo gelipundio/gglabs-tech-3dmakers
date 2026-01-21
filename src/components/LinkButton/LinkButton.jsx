@@ -13,29 +13,28 @@ export default function LinkButton({
     delay = 0,
 }) {
     return (
-        <Link href={href} legacyBehavior passHref>
-            <Button
-                component="a"
-                target={target}
+        <Button
+            component={Link}
+            href={href}
+            target={target}
+            sx={{
+                ...styles.button,
+                animationDelay: `${delay}ms`,
+            }}
+            className="fade-in"
+        >
+            <Box sx={styles.contentWrapper}>
+                {Icon && <Icon sx={{ fontSize: 24 }} />}
+                <span>{label}</span>
+            </Box>
+            <ChevronRightIcon
+                className="arrow-icon"
                 sx={{
-                    ...styles.button,
-                    animationDelay: `${delay}ms`,
+                    fontSize: 20,
+                    opacity: 0.5,
+                    transition: "transform 0.3s ease",
                 }}
-                className="fade-in"
-            >
-                <Box sx={styles.contentWrapper}>
-                    {Icon && <Icon sx={{ fontSize: 24 }} />}
-                    <span>{label}</span>
-                </Box>
-                <ChevronRightIcon
-                    className="arrow-icon"
-                    sx={{
-                        fontSize: 20,
-                        opacity: 0.5,
-                        transition: "transform 0.3s ease",
-                    }}
-                />
-            </Button>
-        </Link>
+            />
+        </Button>
     );
 }
