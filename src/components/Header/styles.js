@@ -57,8 +57,9 @@ const styles = {
         margin: "0 auto",
         lineHeight: 1.5,
     },
-    descriptionSmall: {
-        display: "none", // Hide description in small version to save space
+    tagline: {
+        fontSize: "0.85rem",
+        opacity: 0.7
     },
 };
 

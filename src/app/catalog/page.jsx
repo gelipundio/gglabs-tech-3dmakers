@@ -8,10 +8,17 @@ import Header from "@/components/Header/Header";
 import Footer from "@/components/Footer/Footer";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import Link from "next/link";
+import CollectionsIcon from '@mui/icons-material/Collections';
+import PlayCircleOutlineIcon from '@mui/icons-material/PlayCircleOutline';
+import CloseIcon from "@mui/icons-material/Close";
+import NavigateBeforeIcon from '@mui/icons-material/NavigateBefore';
+import NavigateNextIcon from '@mui/icons-material/NavigateNext';
+import { Dialog, IconButton } from "@mui/material";
 
 export default function CatalogPage() {
     const [products, setProducts] = useState([]);
     const [loading, setLoading] = useState(true);
+    const [gallery, setGallery] = useState({ open: false, media: [], currentIndex: 0 });
 
     useEffect(() => {
         const fetchProducts = async () => {
@@ -23,14 +30,14 @@ export default function CatalogPage() {
     }, []);
 
     return (
-        <Box sx={{ minHeight: "100vh", bgcolor: "background.default" }}>
+        <Box sx={styles.layout}>
             <Container sx={styles.container}>
                 <Stack direction="row" sx={{ width: "100%", mt: 2 }}>
                     <Button
                         component={Link}
                         href="/"
                         startIcon={<ArrowBackIcon />}
-                        sx={{ color: "text.secondary" }}
+                        sx={styles.backLink}
                     >
                         Back to Home
                     </Button>
@@ -38,7 +45,7 @@ export default function CatalogPage() {
 
                 <Header />
 
-                <Box sx={{ textAlign: "center", mb: 8 }}>
+                <Box sx={styles.headerBox}>
                     <Typography variant="h2" sx={styles.title}>
                         Product Catalog
                     </Typography>
@@ -49,22 +56,44 @@ export default function CatalogPage() {
                 </Box>
 
                 {loading ? (
-                    <Box sx={{ display: "flex", justifyContent: "center", mt: 10 }}>
+                    <Box sx={styles.loaderBox}>
                         <CircularProgress size={60} />
                     </Box>
                 ) : products.length > 0 ? (
                     <Box sx={styles.productList}>
                         {products.map((product) => (
-                            <Card key={product.id} sx={styles.productCard} className="fade-in">
-                                <CardMedia
-                                    component="img"
-                                    image={product.image_url}
-                                    alt={product.description}
-                                    sx={{
-                                        ...styles.productImage,
-                                        objectFit: product.fit_mode || "cover"
-                                    }}
-                                />
+                            <Card
+                                key={product.id}
+                                sx={styles.productCard}
+                                className="fade-in"
+                                onClick={() => setGallery({ open: true, media: product.media || [{ url: product.image_url, type: 'image' }], currentIndex: 0 })}
+                            >
+                                <Box sx={styles.imageContainer}>
+                                    <CardMedia
+                                        component="img"
+                                        image={product.image_url}
+                                        alt={product.description}
+                                        sx={{
+                                            ...styles.productImage,
+                                            objectFit: product.fit_mode || "cover"
+                                        }}
+                                    />
+                                    {product.media && (product.media.length > 1 || product.media.some(m => m.type === 'video')) && (
+                                        <Box sx={styles.mediaPill}>
+                                            {product.media.some(m => m.type === 'video') && (
+                                                <PlayCircleOutlineIcon sx={{ fontSize: "1.1rem" }} />
+                                            )}
+                                            {product.media.length > 1 && (
+                                                <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>
+                                                    <CollectionsIcon sx={{ fontSize: "1rem" }} />
+                                                    <Typography sx={{ fontWeight: 700, fontSize: "0.85rem", lineHeight: 1 }}>
+                                                        {product.media.length}
+                                                    </Typography>
+                                                </Box>
+                                            )}
+                                        </Box>
+                                    )}
+                                </Box>
                                 <CardContent sx={styles.productInfo}>
                                     <Typography variant="body1" sx={styles.description}>
                                         {product.description}
@@ -79,11 +108,68 @@ export default function CatalogPage() {
                         ))}
                     </Box>
                 ) : (
-                    <Typography color="text.secondary" sx={{ mt: 10, textAlign: "center", fontSize: "1.2rem" }}>
+                    <Typography color="text.secondary" sx={styles.emptyMessage}>
                         Our catalog is being updated. Please check back soon!
                     </Typography>
                 )}
             </Container>
+
+            <Dialog
+                open={gallery.open}
+                onClose={() => setGallery({ open: false, media: [], currentIndex: 0 })}
+                maxWidth="lg"
+                fullWidth
+                PaperProps={{
+                    sx: styles.galleryDialog
+                }}
+            >
+                <Box sx={styles.galleryContent}>
+                    <IconButton
+                        sx={styles.closeBtn}
+                        onClick={() => setGallery({ open: false, media: [], currentIndex: 0 })}
+                    >
+                        <CloseIcon />
+                    </IconButton>
+
+                    {gallery.media.length > 0 && (
+                        <>
+                            {gallery.media[gallery.currentIndex].type === 'video' ? (
+                                <Box component="video" controls autoPlay src={gallery.media[gallery.currentIndex].url} sx={styles.galleryMedia} />
+                            ) : (
+                                <Box component="img" src={gallery.media[gallery.currentIndex].url} sx={styles.galleryMedia} />
+                            )}
+
+                            {gallery.media.length > 1 && (
+                                <>
+                                    <IconButton
+                                        sx={styles.navArrowLeft}
+                                        onClick={(e) => {
+                                            e.stopPropagation();
+                                            setGallery(prev => ({ ...prev, currentIndex: (prev.currentIndex - 1 + prev.media.length) % prev.media.length }));
+                                        }}
+                                    >
+                                        <NavigateBeforeIcon fontSize="large" />
+                                    </IconButton>
+                                    <IconButton
+                                        sx={styles.navArrowRight}
+                                        onClick={(e) => {
+                                            e.stopPropagation();
+                                            setGallery(prev => ({ ...prev, currentIndex: (prev.currentIndex + 1) % prev.media.length }));
+                                        }}
+                                    >
+                                        <NavigateNextIcon fontSize="large" />
+                                    </IconButton>
+                                </>
+                            )}
+
+                            <Box sx={styles.galleryCounter}>
+                                {gallery.currentIndex + 1} / {gallery.media.length}
+                            </Box>
+                        </>
+                    )}
+                </Box>
+            </Dialog>
+
             <Footer sx={{ mt: 10 }} />
         </Box>
     );

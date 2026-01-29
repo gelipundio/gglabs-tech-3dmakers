@@ -31,9 +31,9 @@ export default function Header({ size = "medium" }) {
                 <Typography variant="body1" sx={styles.description}>
                     by GG Labs
                     <br />
-                    <span style={{ fontSize: "0.85rem", opacity: 0.7 }}>
+                    <Box component="span" sx={styles.tagline}>
                         Prototyping • Design • Production
-                    </span>
+                    </Box>
                 </Typography>
             )}
         </Box>

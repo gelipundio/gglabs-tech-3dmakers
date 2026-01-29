@@ -67,10 +67,103 @@ const styles = {
         color: "primary.main",
         fontSize: "1.25rem",
     },
+    layout: {
+        minHeight: "100vh",
+        bgcolor: "background.default"
+    },
+    backLink: {
+        color: "text.secondary"
+    },
+    headerBox: {
+        textAlign: "center",
+        mb: 8
+    },
+    loaderBox: {
+        display: "flex",
+        justifyContent: "center",
+        mt: 10
+    },
+    imageContainer: {
+        position: "relative"
+    },
+    emptyMessage: {
+        mt: 10,
+        textAlign: "center",
+        fontSize: "1.2rem"
+    },
+    galleryDialog: {
+        bgcolor: "rgba(10, 10, 10, 0.95)",
+        backdropFilter: "blur(20px)",
+        border: "1px solid rgba(255, 255, 255, 0.1)",
+        borderRadius: 4,
+        overflow: "hidden"
+    },
+    galleryContent: {
+        position: "relative",
+        minHeight: "60vh",
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center"
+    },
+    closeBtn: {
+        position: "absolute",
+        top: 15,
+        right: 15,
+        zIndex: 10,
+        color: "white",
+        bgcolor: "rgba(0,0,0,0.3)",
+        "&:hover": { bgcolor: "rgba(0,0,0,0.5)" }
+    },
+    galleryMedia: {
+        maxWidth: "100%",
+        maxHeight: "85vh",
+        objectFit: "contain"
+    },
+    navArrowLeft: {
+        position: "absolute",
+        left: 15,
+        color: "white",
+        bgcolor: "rgba(255,255,255,0.1)",
+        "&:hover": { bgcolor: "rgba(255,255,255,0.2)" }
+    },
+    navArrowRight: {
+        position: "absolute",
+        right: 15,
+        color: "white",
+        bgcolor: "rgba(255,255,255,0.1)",
+        "&:hover": { bgcolor: "rgba(255,255,255,0.2)" }
+    },
+    galleryCounter: {
+        position: "absolute",
+        bottom: 25,
+        color: "white",
+        bgcolor: "rgba(0,0,0,0.5)",
+        px: 2,
+        py: 0.5,
+        borderRadius: 2,
+        fontWeight: 600
+    },
     description: {
         color: "text.secondary",
         lineHeight: 1.6,
         fontSize: "0.95rem",
+    },
+    mediaPill: {
+        position: "absolute",
+        bottom: 12,
+        right: 12,
+        bgcolor: "rgba(0, 0, 0, 0.45)",
+        backdropFilter: "blur(16px)",
+        border: "1px solid rgba(255, 255, 255, 0.12)",
+        borderRadius: "100px",
+        height: "28px",
+        px: 1,
+        display: "flex",
+        alignItems: "center",
+        gap: 0.8,
+        color: "white",
+        boxShadow: "0 4px 12px rgba(0,0,0,0.25)",
+        zIndex: 2,
     }
 };
 

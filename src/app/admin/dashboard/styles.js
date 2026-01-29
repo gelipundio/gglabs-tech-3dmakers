@@ -87,18 +87,18 @@ const styles = {
         backdropFilter: "blur(4px)",
     },
     statusChip: {
-        position: "absolute",
-        top: 10,
-        left: 10,
-        px: 1.2,
-        py: 0.4,
-        borderRadius: 1,
-        fontSize: "0.65rem",
-        fontWeight: 800,
+        display: "inline-flex",
+        alignItems: "center",
+        justifyContent: "center",
+        px: 1,
+        py: 0.25,
+        borderRadius: "4px",
+        fontSize: "0.7rem",
+        fontWeight: 700,
         textTransform: "uppercase",
         letterSpacing: "0.05em",
-        backdropFilter: "blur(12px)",
         border: "1px solid",
+        mb: 1,
     },
     price: {
         fontWeight: 700,
@@ -128,6 +128,194 @@ const styles = {
             borderColor: 'primary.main',
             bgcolor: 'rgba(255, 255, 255, 0.02)'
         }
+    },
+    mediaGrid: {
+        display: "grid",
+        gridTemplateColumns: "repeat(auto-fill, minmax(100px, 1fr))",
+        gap: 1.5,
+        width: "100%",
+        p: 1,
+    },
+    mediaPreview: {
+        width: "100%",
+        height: "100px",
+        borderRadius: 2,
+        overflow: "hidden",
+        position: "relative",
+        border: "1px solid",
+        borderColor: "divider",
+        backgroundColor: "rgba(0,0,0,0.3)",
+        '& img, & video': {
+            width: '100%',
+            height: '100%',
+            objectFit: 'cover',
+        }
+    },
+    mediaTypeIcon: {
+        position: "absolute",
+        top: 4,
+        right: 4,
+        bgcolor: "rgba(0,0,0,0.5)",
+        borderRadius: 1,
+        p: 0.3,
+        display: "flex",
+        color: "white",
+        backdropFilter: "blur(4px)",
+    },
+    removeMedia: {
+        position: "absolute",
+        top: 2,
+        left: 2,
+        p: 0.2,
+        bgcolor: "rgba(0,0,0,0.5)",
+        color: "white",
+        backdropFilter: "blur(4px)",
+        '&:hover': {
+            bgcolor: "rgba(0,0,0,0.7)",
+        }
+    },
+    mediaPill: {
+        position: "absolute",
+        bottom: 12,
+        right: 12,
+        bgcolor: "rgba(0, 0, 0, 0.45)",
+        backdropFilter: "blur(16px)",
+        border: "1px solid rgba(255, 255, 255, 0.12)",
+        borderRadius: "100px",
+        height: "28px",
+        px: 1,
+        display: "flex",
+        alignItems: "center",
+        gap: 0.8,
+        color: "white",
+        boxShadow: "0 4px 12px rgba(0,0,0,0.25)",
+        zIndex: 2,
+    },
+    layout: {
+        minHeight: "100vh",
+        bgcolor: "background.default"
+    },
+    pageTitle: {
+        fontWeight: 700
+    },
+    addBtn: {
+        height: 40
+    },
+    alert: {
+        width: "100%"
+    },
+    previewContainer: {
+        width: "100%"
+    },
+    fitModeStack: {
+        mt: 2
+    },
+    visibilityLabel: {
+        mb: 1,
+        color: "text.secondary",
+        "& .MuiFormControlLabel-label": {
+            fontSize: "0.9rem",
+            fontWeight: 500
+        }
+    },
+    progressBar: {
+        height: 8,
+        borderRadius: 4,
+        bgcolor: 'rgba(255,255,255,0.05)',
+        '& .MuiLinearProgress-bar': {
+            borderRadius: 4,
+        }
+    },
+    statusText: {
+        mt: 1,
+        display: "block",
+        textAlign: "center",
+        color: "text.secondary",
+        fontWeight: 600,
+        letterSpacing: '0.02em'
+    },
+    submitBtn: {
+        py: 1.5,
+        fontWeight: 700
+    },
+    sectionTitle: {
+        alignSelf: 'flex-start',
+        mt: 2
+    },
+    loader: {
+        mt: 4
+    },
+    emptyState: {
+        mt: 4
+    },
+    galleryDialog: {
+        bgcolor: "rgba(10, 10, 10, 0.95)",
+        backdropFilter: "blur(20px)",
+        border: "1px solid rgba(255, 255, 255, 0.1)",
+        borderRadius: 4,
+        overflow: "hidden"
+    },
+    galleryContent: {
+        position: "relative",
+        minHeight: "60vh",
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center"
+    },
+    closeBtn: {
+        position: "absolute",
+        top: 10,
+        right: 10,
+        zIndex: 10,
+        color: "white"
+    },
+    galleryMedia: {
+        maxWidth: "100%",
+        maxHeight: "80vh",
+        objectFit: "contain"
+    },
+    navArrowLeft: {
+        position: "absolute",
+        left: 10,
+        color: "white",
+        bgcolor: "rgba(0,0,0,0.3)",
+        "&:hover": { bgcolor: "rgba(0,0,0,0.5)" }
+    },
+    navArrowRight: {
+        position: "absolute",
+        right: 10,
+        color: "white",
+        bgcolor: "rgba(0,0,0,0.3)",
+        "&:hover": { bgcolor: "rgba(0,0,0,0.5)" }
+    },
+    galleryCounter: {
+        position: "absolute",
+        bottom: 20,
+        color: "white",
+        bgcolor: "rgba(0,0,0,0.5)",
+        px: 2,
+        py: 0.5,
+        borderRadius: 2
+    },
+    deleteDialog: {
+        bgcolor: "rgba(30, 30, 30, 0.95)",
+        backdropFilter: "blur(10px)",
+        border: "1px solid rgba(255, 255, 255, 0.1)",
+        borderRadius: 3,
+    },
+    dialogTitle: {
+        color: "error.main",
+        fontWeight: 700
+    },
+    dialogText: {
+        color: "text.secondary"
+    },
+    dialogActions: {
+        p: 2.5,
+        pt: 0
+    },
+    deleteBtn: {
+        borderRadius: 2
     }
 };
 

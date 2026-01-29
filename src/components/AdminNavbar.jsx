@@ -27,6 +27,26 @@ const styles = {
     },
     logoImage: {
         objectFit: "contain",
+    },
+    logoText: {
+        fontWeight: 800,
+        fontSize: "1.1rem",
+        letterSpacing: "-0.02em"
+    },
+    adminLabel: {
+        color: "text.secondary",
+        fontWeight: 400,
+        fontSize: "0.9rem",
+        ml: 1
+    },
+    logoutBtn: {
+        borderRadius: 2,
+        color: "text.secondary",
+        borderColor: "rgba(255, 255, 255, 0.1)",
+        "&:hover": {
+            borderColor: "rgba(255, 255, 255, 0.3)",
+            bgcolor: "rgba(255, 255, 255, 0.05)",
+        }
     }
 };
 
@@ -41,8 +61,8 @@ export default function AdminNavbar() {
                     height={40}
                     style={styles.logoImage}
                 />
-                <Box sx={{ fontWeight: 800, fontSize: "1.1rem", letterSpacing: "-0.02em" }}>
-                    3D Makers <Box component="span" sx={{ color: "text.secondary", fontWeight: 400, fontSize: "0.9rem", ml: 1 }}>Admin</Box>
+                <Box sx={styles.logoText}>
+                    3D Makers <Box component="span" sx={styles.adminLabel}>Admin</Box>
                 </Box>
             </Box>
 
@@ -51,15 +71,7 @@ export default function AdminNavbar() {
                 variant="outlined"
                 onClick={() => logout()}
                 size="small"
-                sx={{
-                    borderRadius: 2,
-                    color: "text.secondary",
-                    borderColor: "rgba(255, 255, 255, 0.1)",
-                    "&:hover": {
-                        borderColor: "rgba(255, 255, 255, 0.3)",
-                        bgcolor: "rgba(255, 255, 255, 0.05)",
-                    }
-                }}
+                sx={styles.logoutBtn}
             >
                 Logout
             </Button>
