@@ -4,10 +4,23 @@ const styles = {
         mb: 4,
         pt: 6,
     },
+    headerRootSmall: {
+        textAlign: "center",
+        mb: 2,
+        pt: 2,
+    },
     logoArea: {
         width: 140,
         height: 140,
         margin: "0 auto 1.5rem",
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+    },
+    logoAreaSmall: {
+        width: 80,
+        height: 80,
+        margin: "0 auto 0.5rem",
         display: "flex",
         alignItems: "center",
         justifyContent: "center",
@@ -27,12 +40,25 @@ const styles = {
         WebkitBackgroundClip: "text",
         WebkitTextFillColor: "transparent",
     },
+    titleSmall: {
+        fontSize: "1.2rem",
+        fontWeight: 800,
+        letterSpacing: "-0.05em",
+        mb: 0.5,
+        background: "linear-gradient(to right, #fff, #999)",
+        backgroundClip: "text",
+        WebkitBackgroundClip: "text",
+        WebkitTextFillColor: "transparent",
+    },
     description: {
         color: "text.secondary",
         fontSize: "0.95rem",
         maxWidth: 300,
         margin: "0 auto",
         lineHeight: 1.5,
+    },
+    descriptionSmall: {
+        display: "none", // Hide description in small version to save space
     },
 };
 
