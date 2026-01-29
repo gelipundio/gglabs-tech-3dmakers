@@ -3,6 +3,7 @@ import Footer from "@/components/Footer/Footer";
 import LinkButton from "@/components/LinkButton/LinkButton";
 import PhotoCameraIcon from "@mui/icons-material/PhotoCamera";
 import MusicNoteIcon from "@mui/icons-material/MusicNote";
+import GridViewIcon from "@mui/icons-material/GridView";
 import ChatIcon from "@mui/icons-material/Chat";
 import { Container, Stack } from "@mui/material";
 import styles from "./styles";
@@ -13,6 +14,13 @@ export default function Home() {
       <Header />
 
       <Stack spacing={0} sx={styles.linksStack}>
+        <LinkButton
+          label="View Catalog"
+          href="/catalog"
+          icon={GridViewIcon}
+          delay={50}
+          sx={{ mb: 2 }}
+        />
         <LinkButton
           label="Instagram"
           href="https://www.instagram.com/gglabs.3dmakers"

@@ -4,15 +4,20 @@ import { useState, useEffect } from "react";
 import {
     Container, Box, TextField, Button, Typography,
     Alert, Stack, Card, CardMedia, CardContent, IconButton,
-    CircularProgress
+    CircularProgress, Dialog, DialogTitle, DialogContent,
+    DialogContentText, DialogActions
 } from "@mui/material";
-import { uploadProduct, getProducts, deleteProduct } from "../actions";
+import { uploadProduct, getProducts, deleteProduct, toggleVisibility } from "../actions";
 import styles from "./styles";
 import AdminNavbar from "@/components/AdminNavbar";
 import DeleteIcon from "@mui/icons-material/Delete";
 import AddIcon from "@mui/icons-material/Add";
 import CloseIcon from "@mui/icons-material/Close";
 import CloudUploadIcon from "@mui/icons-material/CloudUpload";
+import VisibilityIcon from "@mui/icons-material/Visibility";
+import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
+import Switch from "@mui/material/Switch";
+import FormControlLabel from "@mui/material/FormControlLabel";
 
 export default function DashboardPage() {
     const [products, setProducts] = useState([]);
@@ -23,6 +28,8 @@ export default function DashboardPage() {
     const [selectedFile, setSelectedFile] = useState(null);
     const [previewUrl, setPreviewUrl] = useState(null);
     const [fitMode, setFitMode] = useState("cover");
+    const [isPublic, setIsPublic] = useState(true);
+    const [deleteConfirm, setDeleteConfirm] = useState({ open: false, id: null });
 
     useEffect(() => {
         fetchProducts();
@@ -61,6 +68,7 @@ export default function DashboardPage() {
                 formData.set("photo", selectedFile);
             }
             formData.set("fit_mode", fitMode);
+            formData.set("is_public", isPublic);
 
             const result = await uploadProduct(formData);
 
@@ -69,6 +77,7 @@ export default function DashboardPage() {
                 setShowForm(false);
                 setSelectedFile(null);
                 setFitMode("cover");
+                setIsPublic(true);
                 fetchProducts();
             } else {
                 setMessage({ type: "error", text: result.error || "Failed to upload product" });
@@ -81,14 +90,38 @@ export default function DashboardPage() {
         }
     };
 
-    const handleDelete = async (id) => {
-        if (window.confirm("Are you sure you want to delete this product?")) {
-            const result = await deleteProduct(id);
-            if (result.success) {
-                fetchProducts();
-            } else {
-                alert(result.error);
-            }
+    const handleDelete = (id) => {
+        setDeleteConfirm({ open: true, id });
+    };
+
+    const confirmDelete = async () => {
+        const id = deleteConfirm.id;
+        setDeleteConfirm({ open: false, id: null });
+
+        const result = await deleteProduct(id);
+        if (result.success) {
+            fetchProducts();
+        } else {
+            alert(result.error);
+        }
+    };
+
+    const handleToggleVisibility = async (id, currentStatus) => {
+        setProducts(prevProducts =>
+            prevProducts.map(p =>
+                p.id === id ? { ...p, is_public: !currentStatus } : p
+            )
+        );
+
+        const result = await toggleVisibility(id, currentStatus);
+
+        if (!result.success) {
+            setProducts(prevProducts =>
+                prevProducts.map(p =>
+                    p.id === id ? { ...p, is_public: currentStatus } : p
+                )
+            );
+            alert(result.error);
         }
     };
 
@@ -108,6 +141,7 @@ export default function DashboardPage() {
                             if (showForm) {
                                 setSelectedFile(null);
                                 setFitMode("cover");
+                                setIsPublic(true);
                             }
                         }}
                         sx={{ height: 40 }}
@@ -197,6 +231,24 @@ export default function DashboardPage() {
                                 fullWidth
                                 sx={styles.input}
                             />
+                            <FormControlLabel
+                                control={
+                                    <Switch
+                                        checked={isPublic}
+                                        onChange={(e) => setIsPublic(e.target.checked)}
+                                        color="success"
+                                    />
+                                }
+                                label={isPublic ? "Public" : "Private"}
+                                sx={{
+                                    mb: 1,
+                                    color: "text.secondary",
+                                    "& .MuiFormControlLabel-label": {
+                                        fontSize: "0.9rem",
+                                        fontWeight: 500
+                                    }
+                                }}
+                            />
                             <Button
                                 type="submit"
                                 variant="contained"
@@ -220,28 +272,67 @@ export default function DashboardPage() {
                     <Box sx={styles.productList}>
                         {products.map((product) => (
                             <Card key={product.id} sx={styles.productCard} className="fade-in">
-                                <CardMedia
-                                    component="img"
-                                    image={product.image_url}
-                                    alt={product.description}
-                                    sx={{
-                                        ...styles.productImage,
-                                        objectFit: product.fit_mode || "cover"
-                                    }}
-                                />
+                                <Box sx={{ position: "relative" }}>
+                                    <CardMedia
+                                        component="img"
+                                        image={product.image_url}
+                                        alt={product.description}
+                                        sx={{
+                                            ...styles.productImage,
+                                            objectFit: product.fit_mode || "cover"
+                                        }}
+                                    />
+                                    <Box sx={{
+                                        ...styles.statusChip,
+                                        backgroundColor: "rgba(0, 0, 0, 0.75)",
+                                        color: product.is_public ? "#4caf50" : "#fb8c00",
+                                        borderColor: product.is_public ? "rgba(76, 175, 80, 0.4)" : "rgba(251, 140, 0, 0.4)",
+                                    }}>
+                                        {product.is_public ? "Public" : "Private"}
+                                    </Box>
+                                </Box>
                                 <CardContent sx={styles.productInfo}>
                                     <Stack direction="row" justifyContent="space-between" alignItems="flex-start">
-                                        <Box>
-                                            <Typography variant="body1" sx={{ fontWeight: 500 }}>
+                                        <Box sx={{ flex: 1, mr: 2, minWidth: 0 }}>
+                                            <Typography variant="body1" sx={{ fontWeight: 600, fontSize: "0.95rem", lineHeight: 1.2, mb: 0.5 }}>
                                                 {product.description}
                                             </Typography>
                                             <Typography variant="h6" sx={styles.price}>
                                                 ${product.price}
                                             </Typography>
                                         </Box>
-                                        <IconButton onClick={() => handleDelete(product.id)} color="error" size="small">
-                                            <DeleteIcon fontSize="small" />
-                                        </IconButton>
+                                        <Stack direction="row" spacing={0.5} alignItems="center" sx={{ flexShrink: 0, mt: 0.2 }}>
+                                            <IconButton
+                                                onClick={() => handleToggleVisibility(product.id, product.is_public)}
+                                                size="small"
+                                                title={product.is_public ? "Make Private" : "Make Public"}
+                                                sx={{
+                                                    color: "rgba(255, 255, 255, 0.35)",
+                                                    bgcolor: "rgba(255, 255, 255, 0.03)",
+                                                    "&:hover": {
+                                                        color: "rgba(255, 255, 255, 0.7)",
+                                                        bgcolor: "rgba(255, 255, 255, 0.1)"
+                                                    }
+                                                }}
+                                            >
+                                                {product.is_public ? <VisibilityIcon fontSize="small" /> : <VisibilityOffIcon fontSize="small" />}
+                                            </IconButton>
+                                            <IconButton
+                                                onClick={() => handleDelete(product.id)}
+                                                size="small"
+                                                title="Delete"
+                                                sx={{
+                                                    color: "rgba(211, 47, 47, 0.6)",
+                                                    bgcolor: "rgba(211, 47, 47, 0.05)",
+                                                    "&:hover": {
+                                                        color: "rgba(211, 47, 47, 1)",
+                                                        bgcolor: "rgba(211, 47, 47, 0.15)"
+                                                    }
+                                                }}
+                                            >
+                                                <DeleteIcon fontSize="small" />
+                                            </IconButton>
+                                        </Stack>
                                     </Stack>
                                 </CardContent>
                             </Card>
@@ -255,6 +346,44 @@ export default function DashboardPage() {
                     </Typography>
                 )}
             </Container>
+
+            <Dialog
+                open={deleteConfirm.open}
+                onClose={() => setDeleteConfirm({ open: false, id: null })}
+                PaperProps={{
+                    sx: {
+                        bgcolor: "rgba(30, 30, 30, 0.95)",
+                        backdropFilter: "blur(10px)",
+                        border: "1px solid rgba(255, 255, 255, 0.1)",
+                        borderRadius: 3,
+                    }
+                }}
+            >
+                <DialogTitle sx={{ color: "error.main", fontWeight: 700 }}>
+                    Confirm Deletion
+                </DialogTitle>
+                <DialogContent>
+                    <DialogContentText sx={{ color: "text.secondary" }}>
+                        Are you sure you want to delete this product? This action cannot be undone.
+                    </DialogContentText>
+                </DialogContent>
+                <DialogActions sx={{ p: 2.5, pt: 0 }}>
+                    <Button
+                        onClick={() => setDeleteConfirm({ open: false, id: null })}
+                        sx={{ color: "text.primary" }}
+                    >
+                        Cancel
+                    </Button>
+                    <Button
+                        onClick={confirmDelete}
+                        variant="contained"
+                        color="error"
+                        sx={{ borderRadius: 2 }}
+                    >
+                        Delete
+                    </Button>
+                </DialogActions>
+            </Dialog>
         </Box>
     );
 }

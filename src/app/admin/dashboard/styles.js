@@ -5,7 +5,7 @@ const styles = {
         alignItems: "center",
         px: 3,
         py: 4,
-        maxWidth: "800px !important",
+        maxWidth: "1200px !important",
         margin: "0 auto",
         gap: 4,
     },
@@ -17,6 +17,7 @@ const styles = {
     },
     uploadCard: {
         width: "100%",
+        maxWidth: "800px",
         p: 4,
         borderRadius: 4,
         backgroundColor: "background.paper",
@@ -29,7 +30,12 @@ const styles = {
     productList: {
         width: "100%",
         display: "grid",
-        gridTemplateColumns: { xs: "1fr", sm: "1fr 1fr" },
+        gridTemplateColumns: {
+            xs: "1fr",
+            sm: "repeat(2, 1fr)",
+            md: "repeat(3, 1fr)",
+            lg: "repeat(4, 1fr)"
+        },
         gap: 3,
     },
     productCard: {
@@ -79,6 +85,20 @@ const styles = {
         borderRadius: 2,
         p: 0.5,
         backdropFilter: "blur(4px)",
+    },
+    statusChip: {
+        position: "absolute",
+        top: 10,
+        left: 10,
+        px: 1.2,
+        py: 0.4,
+        borderRadius: 1,
+        fontSize: "0.65rem",
+        fontWeight: 800,
+        textTransform: "uppercase",
+        letterSpacing: "0.05em",
+        backdropFilter: "blur(12px)",
+        border: "1px solid",
     },
     price: {
         fontWeight: 700,

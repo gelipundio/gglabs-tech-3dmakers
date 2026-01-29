@@ -7,7 +7,6 @@ import { redirect } from "next/navigation";
 
 const ADMIN_PWD = process.env.ADMIN_PWD || process.env.admin_pwd;
 
-// Fallback to DATABASE_URL if POSTGRES_URL is missing
 if (!process.env.POSTGRES_URL && process.env.DATABASE_URL) {
     process.env.POSTGRES_URL = process.env.DATABASE_URL;
 }
@@ -23,11 +22,13 @@ async function initDb() {
                 description TEXT NOT NULL,
                 price DECIMAL(10, 2) NOT NULL,
                 fit_mode TEXT DEFAULT 'cover',
+                is_public BOOLEAN DEFAULT TRUE,
                 created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
             );
         `;
         try {
             await db`ALTER TABLE products ADD COLUMN IF NOT EXISTS fit_mode TEXT DEFAULT 'cover'`;
+            await db`ALTER TABLE products ADD COLUMN IF NOT EXISTS is_public BOOLEAN DEFAULT TRUE`;
         } catch (e) {
         }
     } catch (error) {
@@ -63,6 +64,7 @@ export async function uploadProduct(formData) {
     const description = formData.get("description");
     const price = formData.get("price");
     const fitMode = formData.get("fit_mode") || "cover";
+    const isPublic = formData.get("is_public") === "false" ? false : true;
 
     if (!photo || !description || !price) {
         return { error: "Missing required fields" };
@@ -80,8 +82,8 @@ export async function uploadProduct(formData) {
         });
 
         await db`
-            INSERT INTO products (image_url, description, price, fit_mode)
-            VALUES (${blob.url}, ${description}, ${price}, ${fitMode});
+            INSERT INTO products (image_url, description, price, fit_mode, is_public)
+            VALUES (${blob.url}, ${description}, ${price}, ${fitMode}, ${isPublic});
         `;
 
         return { success: true, url: blob.url };
@@ -99,6 +101,29 @@ export async function getProducts() {
     } catch (error) {
         console.error("Fetch error:", error);
         return [];
+    }
+}
+
+export async function getPublicProducts() {
+    try {
+        await initDb();
+        const { rows } = await db`SELECT * FROM products WHERE is_public = TRUE ORDER BY created_at DESC`;
+        return rows;
+    } catch (error) {
+        console.error("Public fetch error:", error);
+        return [];
+    }
+}
+
+export async function toggleVisibility(id, currentStatus) {
+    try {
+        await initDb();
+        const newStatus = !currentStatus;
+        await db`UPDATE products SET is_public = ${newStatus} WHERE id = ${id}`;
+        return { success: true, is_public: newStatus };
+    } catch (error) {
+        console.error("Toggle error:", error);
+        return { error: "Failed to toggle visibility" };
     }
 }
 
