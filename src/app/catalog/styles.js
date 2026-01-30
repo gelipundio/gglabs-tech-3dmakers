@@ -71,6 +71,10 @@ const styles = {
         minHeight: "100vh",
         bgcolor: "background.default"
     },
+    backLinkContainer: {
+        width: "100%",
+        mt: 2
+    },
     backLink: {
         color: "text.secondary"
     },
@@ -148,6 +152,12 @@ const styles = {
         lineHeight: 1.6,
         fontSize: "0.95rem",
     },
+    productInfoFooter: {
+        mt: "auto",
+        pt: 2,
+        borderTop: "1px solid",
+        borderColor: "divider"
+    },
     mediaPill: {
         position: "absolute",
         bottom: 12,
@@ -164,6 +174,32 @@ const styles = {
         color: "white",
         boxShadow: "0 4px 12px rgba(0,0,0,0.25)",
         zIndex: 2,
+    },
+    mediaIconWrapper: {
+        display: 'flex',
+        alignItems: 'center',
+        gap: 0.5
+    },
+    mediaBadgeIcon: {
+        fontSize: "18px",
+        display: "block",
+    },
+    youtubeWrapper: {
+        width: "100%",
+        maxWidth: "900px",
+        height: "auto",
+        aspectRatio: "16 / 9",
+        borderRadius: "16px",
+        overflow: "hidden",
+        backgroundColor: "black",
+        "& iframe": {
+            width: "100%",
+            height: "100%",
+            border: "none"
+        }
+    },
+    footerContainer: {
+        mt: 10
     }
 };
 

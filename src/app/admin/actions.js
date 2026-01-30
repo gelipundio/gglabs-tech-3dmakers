@@ -86,13 +86,28 @@ export async function uploadProduct(formData) {
         const price = parseFloat(formData.get("price"));
         const fitMode = formData.get("fit_mode") || "cover";
         const isPublic = formData.get("is_public") === "false" ? false : true;
+        const youtubeUrlsRaw = formData.get("youtube_urls")?.toString() || "";
 
-        if (!photos.length || !description || isNaN(price) || price < 0) {
+        if ((!photos.length && !youtubeUrlsRaw) || !description || isNaN(price) || price < 0) {
             return { error: "Invalid input fields. Please check description and price." };
         }
 
         await initDb();
         const media = [];
+
+        if (youtubeUrlsRaw) {
+            const urls = youtubeUrlsRaw.split(",").map(u => u.trim()).filter(Boolean);
+            for (const url of urls) {
+                const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/;
+                const match = url.match(regExp);
+                const id = (match && match[2].length === 11) ? match[2] : null;
+
+                if (id) {
+                    media.push({ type: "youtube", url, id });
+                }
+            }
+        }
+
         const ALLOWED_TYPES = ["image/jpeg", "image/png", "image/webp", "video/mp4", "video/webm", "video/quicktime"];
         const MAX_FILE_SIZE = 500 * 1024 * 1024; // 500MB
 

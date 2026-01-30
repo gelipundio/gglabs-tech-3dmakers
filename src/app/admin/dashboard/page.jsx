@@ -22,6 +22,7 @@ import PlayCircleOutlineIcon from '@mui/icons-material/PlayCircleOutline';
 import CollectionsIcon from '@mui/icons-material/Collections';
 import NavigateBeforeIcon from '@mui/icons-material/NavigateBefore';
 import NavigateNextIcon from '@mui/icons-material/NavigateNext';
+import YouTubeIcon from '@mui/icons-material/YouTube';
 
 export default function DashboardPage() {
     const [products, setProducts] = useState([]);
@@ -37,6 +38,7 @@ export default function DashboardPage() {
     const [isPublic, setIsPublic] = useState(true);
     const [deleteConfirm, setDeleteConfirm] = useState({ open: false, id: null });
     const [gallery, setGallery] = useState({ open: false, media: [], currentIndex: 0 });
+    const [youtubeUrls, setYoutubeUrls] = useState("");
 
     useEffect(() => {
         fetchProducts();
@@ -87,6 +89,7 @@ export default function DashboardPage() {
             });
             formData.set("fit_mode", fitMode);
             formData.set("is_public", isPublic);
+            formData.set("youtube_urls", youtubeUrls);
 
             setUploadStatus("Uploading your files and videos...");
             setProgress(30);
@@ -112,6 +115,7 @@ export default function DashboardPage() {
                     setSelectedFiles([]);
                     setFitMode("cover");
                     setIsPublic(true);
+                    setYoutubeUrls("");
                     setProgress(0);
                     setUploadStatus("");
                     setUploading(false);
@@ -170,7 +174,7 @@ export default function DashboardPage() {
     return (
         <Box sx={styles.layout}>
             <AdminNavbar />
-            <Container sx={{ ...styles.container, pt: 2 }}>
+            <Container sx={styles.dashboardContainer}>
                 <Box sx={styles.headerRow}>
                     <Typography variant="h4" sx={styles.pageTitle}>
                         Admin Dashboard
@@ -243,7 +247,7 @@ export default function DashboardPage() {
                                             </Box>
                                         ))}
                                         <label htmlFor="photo-upload">
-                                            <Box sx={{ ...styles.mediaPreview, cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', bgcolor: 'rgba(255,255,255,0.05)' }}>
+                                            <Box sx={styles.mediaAddButton}>
                                                 <AddIcon color="action" />
                                             </Box>
                                         </label>
@@ -281,10 +285,19 @@ export default function DashboardPage() {
                                 name="price"
                                 label="Price"
                                 type="number"
-                                step="0.01"
+                                slotProps={{ htmlInput: { step: "0.01" } }}
                                 required
                                 fullWidth
                                 sx={styles.input}
+                            />
+                            <TextField
+                                label="YouTube URLs"
+                                placeholder="https://www.youtube.com/watch?v=..., comma separated"
+                                value={youtubeUrls}
+                                onChange={(e) => setYoutubeUrls(e.target.value)}
+                                fullWidth
+                                sx={styles.input}
+                                helperText="Optional: Add one or more YouTube video links"
                             />
                             <FormControlLabel
                                 control={
@@ -298,7 +311,7 @@ export default function DashboardPage() {
                                 sx={styles.visibilityLabel}
                             />
                             {uploading && (
-                                <Box sx={{ mb: 2, mt: 1 }}>
+                                <Box sx={styles.progressWrapper}>
                                     <LinearProgress
                                         variant="determinate"
                                         value={progress}
@@ -338,7 +351,7 @@ export default function DashboardPage() {
                             {products.map((product) => (
                                 <Card key={product.id} sx={styles.productCard} className="fade-in">
                                     <Box
-                                        sx={{ position: "relative", cursor: "pointer" }}
+                                        sx={styles.imageWrapper}
                                         onClick={() => setGallery({ open: true, media: product.media || [{ url: product.image_url, type: 'image' }], currentIndex: 0 })}
                                     >
                                         <CardMedia
@@ -353,10 +366,13 @@ export default function DashboardPage() {
                                         {product.media && (product.media.length > 1 || product.media.some(m => m.type === 'video')) && (
                                             <Box sx={styles.mediaPill}>
                                                 {product.media.some(m => m.type === 'video') && (
-                                                    <PlayCircleOutlineIcon sx={{ fontSize: "1.1rem" }} />
+                                                    <PlayCircleOutlineIcon sx={styles.mediaBadgeIcon} />
+                                                )}
+                                                {product.media.some(m => m.type === 'youtube') && (
+                                                    <YouTubeIcon sx={styles.mediaBadgeIcon} />
                                                 )}
                                                 {product.media.length > 1 && (
-                                                    <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>
+                                                    <Box sx={styles.actionIconWrapper}>
                                                         <CollectionsIcon sx={{ fontSize: "1rem" }} />
                                                         <Typography sx={{ fontWeight: 700, fontSize: "0.85rem", lineHeight: 1 }}>
                                                             {product.media.length}
@@ -377,7 +393,7 @@ export default function DashboardPage() {
                                         </Box>
                                         <Stack direction="row" justifyContent="space-between" alignItems="flex-start">
                                             <Box sx={{ flex: 1, mr: 2, minWidth: 0 }}>
-                                                <Typography variant="body1" sx={{ fontWeight: 600, fontSize: "0.95rem", lineHeight: 1.2, mb: 0.5 }}>
+                                                <Typography variant="body1" sx={styles.productDescription}>
                                                     {product.description}
                                                 </Typography>
                                                 <Typography variant="h6" sx={styles.price}>
@@ -452,7 +468,17 @@ export default function DashboardPage() {
 
                     {gallery.media.length > 0 && (
                         <>
-                            {gallery.media[gallery.currentIndex].type === 'video' ? (
+                            {gallery.media[gallery.currentIndex].type === 'youtube' ? (
+                                <Box sx={styles.youtubeWrapper}>
+                                    <iframe
+                                        src={`https://www.youtube.com/embed/${gallery.media[gallery.currentIndex].id}?autoplay=1`}
+                                        title="YouTube video player"
+                                        frameBorder="0"
+                                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                                        allowFullScreen
+                                    ></iframe>
+                                </Box>
+                            ) : gallery.media[gallery.currentIndex].type === 'video' ? (
                                 <Box component="video" controls autoPlay src={gallery.media[gallery.currentIndex].url} sx={styles.galleryMedia} />
                             ) : (
                                 <Box component="img" src={gallery.media[gallery.currentIndex].url} sx={styles.galleryMedia} />
@@ -501,7 +527,7 @@ export default function DashboardPage() {
                 <DialogActions sx={styles.dialogActions}>
                     <Button
                         onClick={() => setDeleteConfirm({ open: false, id: null })}
-                        sx={{ color: "text.primary" }}
+                        sx={styles.cancelDeleteBtn}
                     >
                         Cancel
                     </Button>

@@ -13,6 +13,7 @@ import PlayCircleOutlineIcon from '@mui/icons-material/PlayCircleOutline';
 import CloseIcon from "@mui/icons-material/Close";
 import NavigateBeforeIcon from '@mui/icons-material/NavigateBefore';
 import NavigateNextIcon from '@mui/icons-material/NavigateNext';
+import YouTubeIcon from '@mui/icons-material/YouTube';
 import { Dialog, IconButton } from "@mui/material";
 
 export default function CatalogPage() {
@@ -32,7 +33,7 @@ export default function CatalogPage() {
     return (
         <Box sx={styles.layout}>
             <Container sx={styles.container}>
-                <Stack direction="row" sx={{ width: "100%", mt: 2 }}>
+                <Stack direction="row" sx={styles.backLinkContainer}>
                     <Button
                         component={Link}
                         href="/"
@@ -78,13 +79,19 @@ export default function CatalogPage() {
                                             objectFit: product.fit_mode || "cover"
                                         }}
                                     />
-                                    {product.media && (product.media.length > 1 || product.media.some(m => m.type === 'video')) && (
+                                    {product.media && (product.media.length > 1 || product.media.some(m => m.type === 'video' || m.type === 'youtube')) && (
                                         <Box sx={styles.mediaPill}>
-                                            {product.media.some(m => m.type === 'video') && (
-                                                <PlayCircleOutlineIcon sx={{ fontSize: "1.1rem" }} />
+                                            {(product.media.some(m => m.type === 'video') || product.media.some(m => m.type === 'youtube')) && (
+                                                <Box sx={styles.mediaIconWrapper}>
+                                                    {product.media.some(m => m.type === 'video') ? (
+                                                        <PlayCircleOutlineIcon sx={styles.mediaBadgeIcon} />
+                                                    ) : (
+                                                        <YouTubeIcon sx={styles.mediaBadgeIcon} />
+                                                    )}
+                                                </Box>
                                             )}
                                             {product.media.length > 1 && (
-                                                <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>
+                                                <Box sx={styles.mediaIconWrapper}>
                                                     <CollectionsIcon sx={{ fontSize: "1rem" }} />
                                                     <Typography sx={{ fontWeight: 700, fontSize: "0.85rem", lineHeight: 1 }}>
                                                         {product.media.length}
@@ -98,7 +105,7 @@ export default function CatalogPage() {
                                     <Typography variant="body1" sx={styles.description}>
                                         {product.description}
                                     </Typography>
-                                    <Box sx={{ mt: "auto", pt: 2, borderTop: "1px solid", borderColor: "divider" }}>
+                                    <Box sx={styles.productInfoFooter}>
                                         <Typography variant="h6" sx={styles.price}>
                                             ${product.price}
                                         </Typography>
@@ -133,7 +140,17 @@ export default function CatalogPage() {
 
                     {gallery.media.length > 0 && (
                         <>
-                            {gallery.media[gallery.currentIndex].type === 'video' ? (
+                            {gallery.media[gallery.currentIndex].type === 'youtube' ? (
+                                <Box sx={styles.youtubeWrapper}>
+                                    <iframe
+                                        src={`https://www.youtube.com/embed/${gallery.media[gallery.currentIndex].id}?autoplay=1`}
+                                        title="YouTube video player"
+                                        frameBorder="0"
+                                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                                        allowFullScreen
+                                    ></iframe>
+                                </Box>
+                            ) : gallery.media[gallery.currentIndex].type === 'video' ? (
                                 <Box component="video" controls autoPlay src={gallery.media[gallery.currentIndex].url} sx={styles.galleryMedia} />
                             ) : (
                                 <Box component="img" src={gallery.media[gallery.currentIndex].url} sx={styles.galleryMedia} />
@@ -170,7 +187,7 @@ export default function CatalogPage() {
                 </Box>
             </Dialog>
 
-            <Footer sx={{ mt: 10 }} />
+            <Footer sx={styles.footerContainer} />
         </Box>
     );
 }

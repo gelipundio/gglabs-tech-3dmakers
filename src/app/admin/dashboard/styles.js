@@ -9,6 +9,17 @@ const styles = {
         margin: "0 auto",
         gap: 4,
     },
+    dashboardContainer: {
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+        px: 3,
+        pt: 2,
+        pb: 4,
+        maxWidth: "1200px !important",
+        margin: "0 auto",
+        gap: 4,
+    },
     headerRow: {
         width: "100%",
         display: "flex",
@@ -103,6 +114,29 @@ const styles = {
     price: {
         fontWeight: 700,
         color: "primary.main",
+        fontSize: "1.25rem",
+    },
+    productDescription: {
+        fontWeight: 600,
+        fontSize: "0.95rem",
+        lineHeight: 1.2,
+        mb: 0.5
+    },
+    imageWrapper: {
+        position: "relative",
+        cursor: "pointer"
+    },
+    actionIconWrapper: {
+        display: 'flex',
+        alignItems: 'center',
+        gap: 0.5
+    },
+    mediaBadgeIcon: {
+        fontSize: "18px",
+        display: "block",
+    },
+    cancelDeleteBtn: {
+        color: "text.primary"
     },
     form: {
         display: "flex",
@@ -135,6 +169,27 @@ const styles = {
         gap: 1.5,
         width: "100%",
         p: 1,
+    },
+    mediaGrid: {
+        display: "grid",
+        gridTemplateColumns: "repeat(auto-fill, minmax(80px, 1fr))",
+        gap: 1.5,
+        mb: 2
+    },
+    mediaAddButton: {
+        cursor: 'pointer',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        bgcolor: 'rgba(255,255,255,0.05)',
+        width: "100%",
+        height: "80px",
+        borderRadius: 2,
+        border: "1px dashed rgba(255,255,255,0.2)",
+        "&:hover": {
+            bgcolor: "rgba(255,255,255,0.08)",
+            borderColor: "rgba(255,255,255,0.3)"
+        }
     },
     mediaPreview: {
         width: "100%",
@@ -217,6 +272,10 @@ const styles = {
             fontSize: "0.9rem",
             fontWeight: 500
         }
+    },
+    progressWrapper: {
+        mb: 2,
+        mt: 1
     },
     progressBar: {
         height: 8,
@@ -316,6 +375,20 @@ const styles = {
     },
     deleteBtn: {
         borderRadius: 2
+    },
+    youtubeWrapper: {
+        width: "100%",
+        maxWidth: "900px",
+        height: "auto",
+        aspectRatio: "16 / 9",
+        borderRadius: "16px",
+        overflow: "hidden",
+        backgroundColor: "black",
+        "& iframe": {
+            width: "100%",
+            height: "100%",
+            border: "none"
+        }
     }
 };
 
