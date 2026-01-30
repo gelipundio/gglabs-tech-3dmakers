@@ -18,6 +18,9 @@ const styles = {
         margin: 0,
         gap: 0,
     },
+    catalogLink: {
+        mb: 2
+    }
 };
 
 export default styles;

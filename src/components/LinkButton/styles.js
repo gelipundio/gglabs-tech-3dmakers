@@ -16,17 +16,17 @@ const styles = {
         mb: 2,
         textTransform: "none",
         "&:hover": {
-            background: "primary.main",
-            color: "background.default",
-            transform: "translateY(-2px)",
-            boxShadow: "0 10px 20px -10px rgba(255, 255, 255, 0.2)",
-            borderColor: "transparent",
+            background: "rgba(255, 255, 255, 0.08)",
+            color: "text.primary",
+            transform: "translateY(-4px) scale(1.02)",
+            boxShadow: "0 12px 40px -10px rgba(0, 0, 0, 0.5), 0 0 20px rgba(255, 255, 255, 0.05)",
+            borderColor: "rgba(255, 255, 255, 0.3)",
             "& .MuiSvgIcon-root": {
-                color: "background.default",
+                color: "primary.main",
             },
             "& .arrow-icon": {
                 opacity: 1,
-                transform: "translateX(4px)",
+                transform: "translateX(6px)",
             },
         },
         "&:active": {

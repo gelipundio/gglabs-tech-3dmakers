@@ -9,6 +9,14 @@ const styles = {
         maxWidth: "1200px !important",
         margin: "0 auto",
         gap: 6,
+        position: "relative",
+    },
+    cornerHeader: {
+        position: { xs: "static", sm: "absolute" },
+        top: 32,
+        right: 32,
+        m: 0,
+        zIndex: 10,
     },
     title: {
         fontWeight: 800,

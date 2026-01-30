@@ -44,7 +44,7 @@ export default function CatalogPage() {
                     </Button>
                 </Stack>
 
-                <Header />
+                <Header size="small" sx={styles.cornerHeader} />
 
                 <Box sx={styles.headerBox}>
                     <Typography variant="h2" sx={styles.title}>

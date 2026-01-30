@@ -5,6 +5,7 @@ import PhotoCameraIcon from "@mui/icons-material/PhotoCamera";
 import MusicNoteIcon from "@mui/icons-material/MusicNote";
 import GridViewIcon from "@mui/icons-material/GridView";
 import ChatIcon from "@mui/icons-material/Chat";
+import YouTubeIcon from "@mui/icons-material/YouTube";
 import { Container, Stack } from "@mui/material";
 import styles from "./styles";
 
@@ -19,7 +20,7 @@ export default function Home() {
           href="/catalog"
           icon={GridViewIcon}
           delay={50}
-          sx={{ mb: 2 }}
+          sx={styles.catalogLink}
         />
         <LinkButton
           label="Instagram"
@@ -27,6 +28,13 @@ export default function Home() {
           target="_blank"
           icon={PhotoCameraIcon}
           delay={100}
+        />
+        <LinkButton
+          label="YouTube"
+          href="https://www.youtube.com/@gglabs.3dmakers"
+          target="_blank"
+          icon={YouTubeIcon}
+          delay={150}
         />
         <LinkButton
           label="TikTok"
