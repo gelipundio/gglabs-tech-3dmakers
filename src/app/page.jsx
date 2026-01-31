@@ -16,25 +16,11 @@ export default function Home() {
 
       <Stack spacing={0} sx={styles.linksStack}>
         <LinkButton
-          label="View Catalog"
-          href="/catalog"
-          icon={GridViewIcon}
-          delay={50}
-          sx={styles.catalogLink}
-        />
-        <LinkButton
           label="Instagram"
           href="https://www.instagram.com/gglabs.3dmakers"
           target="_blank"
           icon={PhotoCameraIcon}
           delay={100}
-        />
-        <LinkButton
-          label="YouTube"
-          href="https://www.youtube.com/@gglabs.3dmakers"
-          target="_blank"
-          icon={YouTubeIcon}
-          delay={150}
         />
         <LinkButton
           label="TikTok"
@@ -44,11 +30,25 @@ export default function Home() {
           delay={200}
         />
         <LinkButton
+          label="YouTube"
+          href="https://www.youtube.com/@gglabs.3dmakers"
+          target="_blank"
+          icon={YouTubeIcon}
+          delay={150}
+        />
+        <LinkButton
           label="WhatsApp"
           href="https://wa.me/523313267354"
           target="_blank"
           icon={ChatIcon}
           delay={300}
+        />
+        <LinkButton
+          label="View Catalog"
+          href="/catalog"
+          icon={GridViewIcon}
+          delay={50}
+          sx={styles.catalogLink}
         />
       </Stack>
 

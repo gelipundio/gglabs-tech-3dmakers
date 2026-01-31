@@ -363,13 +363,10 @@ export default function DashboardPage() {
                                                 objectFit: product.fit_mode || "cover"
                                             }}
                                         />
-                                        {product.media && (product.media.length > 1 || product.media.some(m => m.type === 'video')) && (
+                                        {product.media && (product.media.length > 1 || product.media.some(m => m.type === 'video' || m.type === 'youtube')) && (
                                             <Box sx={styles.mediaPill}>
-                                                {product.media.some(m => m.type === 'video') && (
+                                                {product.media.some(m => m.type === 'video' || m.type === 'youtube') && (
                                                     <PlayCircleOutlineIcon sx={styles.mediaBadgeIcon} />
-                                                )}
-                                                {product.media.some(m => m.type === 'youtube') && (
-                                                    <YouTubeIcon sx={styles.mediaBadgeIcon} />
                                                 )}
                                                 {product.media.length > 1 && (
                                                     <Box sx={styles.actionIconWrapper}>
