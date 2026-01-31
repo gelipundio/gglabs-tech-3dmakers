@@ -1,13 +1,5 @@
 
 import ThemeRegistry from "@/components/ThemeRegistry";
-import { Ubuntu } from "next/font/google";
-
-const ubuntu = Ubuntu({
-    subsets: ["latin"],
-    weight: ["300", "400", "500", "700"],
-    style: ["normal", "italic"],
-    display: "swap",
-});
 
 export const metadata = {
     title: "3D Makers by GG Labs",
@@ -24,7 +16,19 @@ export default function RootLayout({
     children,
 }) {
     return (
-        <html lang="en" suppressHydrationWarning className={ubuntu.className}>
+        <html lang="en" suppressHydrationWarning>
+            <head>
+                <link rel="preconnect" href="https://fonts.googleapis.com" />
+                <link
+                    rel="preconnect"
+                    href="https://fonts.gstatic.com"
+                    crossOrigin="anonymous"
+                />
+                <link
+                    href="https://fonts.googleapis.com/css2?family=Ubuntu:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400;1,500;1,700&display=swap"
+                    rel="stylesheet"
+                />
+            </head>
             <body suppressHydrationWarning>
                 <ThemeRegistry>{children}</ThemeRegistry>
             </body>

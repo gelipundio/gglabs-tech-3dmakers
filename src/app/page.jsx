@@ -16,6 +16,13 @@ export default function Home() {
 
       <Stack spacing={0} sx={styles.linksStack}>
         <LinkButton
+          label="View Catalog"
+          href="/catalog"
+          icon={GridViewIcon}
+          delay={50}
+          sx={styles.catalogLink}
+        />
+        <LinkButton
           label="Instagram"
           href="https://www.instagram.com/gglabs.3dmakers"
           target="_blank"
@@ -42,13 +49,6 @@ export default function Home() {
           target="_blank"
           icon={ChatIcon}
           delay={300}
-        />
-        <LinkButton
-          label="View Catalog"
-          href="/catalog"
-          icon={GridViewIcon}
-          delay={50}
-          sx={styles.catalogLink}
         />
       </Stack>
 
