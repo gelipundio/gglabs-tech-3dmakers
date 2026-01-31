@@ -46,7 +46,7 @@ async function initDb() {
                 SET media = jsonb_build_array(jsonb_build_object('url', image_url, 'type', 'image'))
                 WHERE (media IS NULL OR jsonb_array_length(media) = 0) AND image_url IS NOT NULL;
             `;
-        } catch (e) {
+        } catch {
         }
     } catch (error) {
         console.error("Database initialization failed:", error);
