@@ -171,6 +171,12 @@ export default function DashboardPage() {
         }
     };
 
+    const sortMedia = (media) => {
+        if (!media || media.length === 0) return media;
+        const order = { image: 0, video: 1, youtube: 2 };
+        return [...media].sort((a, b) => order[a.type] - order[b.type]);
+    };
+
     return (
         <Box sx={styles.layout}>
             <AdminNavbar />
@@ -207,7 +213,7 @@ export default function DashboardPage() {
                         <Typography variant="h6">Upload New Product</Typography>
                         <Box component="form" onSubmit={handleUpload} sx={styles.form}>
                             <input
-                                accept="image/*,video/*"
+                                accept="image/jpeg,image/jpg,image/png,image/webp,video/mp4,video/webm,video/quicktime"
                                 style={{ display: 'none' }}
                                 id="photo-upload"
                                 type="file"
@@ -352,7 +358,7 @@ export default function DashboardPage() {
                                 <Card key={product.id} sx={styles.productCard} className="fade-in">
                                     <Box
                                         sx={styles.imageWrapper}
-                                        onClick={() => setGallery({ open: true, media: product.media || [{ url: product.image_url, type: 'image' }], currentIndex: 0 })}
+                                        onClick={() => setGallery({ open: true, media: sortMedia(product.media || [{ url: product.image_url, type: 'image' }]), currentIndex: 0 })}
                                     >
                                         <CardMedia
                                             component="img"
