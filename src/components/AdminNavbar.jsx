@@ -66,6 +66,23 @@ export default function AdminNavbar() {
                 </Box>
             </Box>
 
+            <Box sx={{ display: 'flex', gap: 2 }}>
+                <Button
+                    variant="text"
+                    href="/admin/dashboard"
+                    sx={{ color: '#fff' }}
+                >
+                    Products
+                </Button>
+                <Button
+                    variant="text"
+                    href="/admin/sales"
+                    sx={{ color: '#fff' }}
+                >
+                    Sales
+                </Button>
+            </Box>
+
             <Button
                 startIcon={<LogoutIcon />}
                 variant="outlined"
