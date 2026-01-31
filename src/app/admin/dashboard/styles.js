@@ -23,8 +23,10 @@ const styles = {
     headerRow: {
         width: "100%",
         display: "flex",
+        flexDirection: { xs: "column", sm: "row" },
         justifyContent: "space-between",
-        alignItems: "center",
+        alignItems: { xs: "stretch", sm: "center" },
+        gap: { xs: 2, sm: 0 }
     },
     uploadCard: {
         width: "100%",
@@ -251,10 +253,12 @@ const styles = {
         bgcolor: "background.default"
     },
     pageTitle: {
-        fontWeight: 700
+        fontWeight: 700,
+        fontSize: { xs: "1.5rem", sm: "2rem", md: "2.125rem" }
     },
     addBtn: {
-        height: 40
+        height: { xs: 44, sm: 40 },
+        fontSize: { xs: "0.875rem", sm: "0.9375rem" }
     },
     alert: {
         width: "100%"

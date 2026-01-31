@@ -12,6 +12,7 @@ const styles = {
         position: "relative",
     },
     cornerHeader: {
+        display: { xs: "none", sm: "block" },
         position: { xs: "static", sm: "absolute" },
         top: 32,
         right: 32,
@@ -22,6 +23,7 @@ const styles = {
         fontWeight: 800,
         textAlign: "center",
         mb: 2,
+        fontSize: { xs: "2rem", sm: "2.5rem", md: "3rem" },
         background: "linear-gradient(to right, #fff, #999)",
         backgroundClip: "text",
         WebkitBackgroundClip: "text",
@@ -30,7 +32,7 @@ const styles = {
     subtitle: {
         textAlign: "center",
         color: "text.secondary",
-        mb: 6,
+        mb: { xs: 2, sm: 3, md: 4 },
         maxWidth: 600,
     },
     productList: {
@@ -88,7 +90,7 @@ const styles = {
     },
     headerBox: {
         textAlign: "center",
-        mb: 8
+        mb: { xs: 3, sm: 4, md: 6 }
     },
     loaderBox: {
         display: "flex",
