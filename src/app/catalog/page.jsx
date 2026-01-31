@@ -30,6 +30,12 @@ export default function CatalogPage() {
         fetchProducts();
     }, []);
 
+    const sortMedia = (media) => {
+        if (!media || media.length === 0) return media;
+        const order = { image: 0, video: 1, youtube: 2 };
+        return [...media].sort((a, b) => order[a.type] - order[b.type]);
+    };
+
     return (
         <Box sx={styles.layout}>
             <Container sx={styles.container}>
@@ -67,7 +73,7 @@ export default function CatalogPage() {
                                 key={product.id}
                                 sx={styles.productCard}
                                 className="fade-in"
-                                onClick={() => setGallery({ open: true, media: product.media || [{ url: product.image_url, type: 'image' }], currentIndex: 0 })}
+                                onClick={() => setGallery({ open: true, media: sortMedia(product.media || [{ url: product.image_url, type: 'image' }]), currentIndex: 0 })}
                             >
                                 <Box sx={styles.imageContainer}>
                                     <CardMedia

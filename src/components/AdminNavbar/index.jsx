@@ -3,52 +3,7 @@ import Button from "@mui/material/Button";
 import Image from "next/image";
 import { logout } from "@/app/admin/actions";
 import LogoutIcon from "@mui/icons-material/Logout";
-
-const styles = {
-    navbar: {
-        width: "100%",
-        display: "flex",
-        justifyContent: "space-between",
-        alignItems: "center",
-        py: 2,
-        px: { xs: 2, md: 4 },
-        borderBottom: "1px solid",
-        borderColor: "divider",
-        backgroundColor: "rgba(17, 17, 17, 0.8)",
-        backdropFilter: "blur(10px)",
-        position: "sticky",
-        top: 0,
-        zIndex: 1100,
-    },
-    logoArea: {
-        display: "flex",
-        alignItems: "center",
-        gap: 2,
-    },
-    logoImage: {
-        objectFit: "contain",
-    },
-    logoText: {
-        fontWeight: 800,
-        fontSize: "1.1rem",
-        letterSpacing: "-0.02em"
-    },
-    adminLabel: {
-        color: "text.secondary",
-        fontWeight: 400,
-        fontSize: "0.9rem",
-        ml: 1
-    },
-    logoutBtn: {
-        borderRadius: 2,
-        color: "text.secondary",
-        borderColor: "rgba(255, 255, 255, 0.1)",
-        "&:hover": {
-            borderColor: "rgba(255, 255, 255, 0.3)",
-            bgcolor: "rgba(255, 255, 255, 0.05)",
-        }
-    }
-};
+import styles from "./styles";
 
 export default function AdminNavbar() {
     return (
@@ -66,18 +21,18 @@ export default function AdminNavbar() {
                 </Box>
             </Box>
 
-            <Box sx={{ display: 'flex', gap: 2 }}>
+            <Box sx={styles.navLinks}>
                 <Button
                     variant="text"
                     href="/admin/dashboard"
-                    sx={{ color: '#fff' }}
+                    sx={styles.navButton}
                 >
                     Products
                 </Button>
                 <Button
                     variant="text"
                     href="/admin/sales"
-                    sx={{ color: '#fff' }}
+                    sx={styles.navButton}
                 >
                     Sales
                 </Button>
@@ -95,3 +50,4 @@ export default function AdminNavbar() {
         </Box>
     );
 }
+
