@@ -4,6 +4,7 @@ import { put } from "@vercel/blob";
 import { sql } from "@vercel/postgres";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
+import { revalidatePath } from "next/cache";
 
 const ADMIN_PWD = process.env.ADMIN_PWD || process.env.admin_pwd;
 
@@ -35,11 +36,26 @@ async function initDb() {
                 created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
             );
         `;
+
+        await db`
+            CREATE TABLE IF NOT EXISTS sales (
+                id SERIAL PRIMARY KEY,
+                description TEXT NOT NULL,
+                quantity INTEGER NOT NULL,
+                price_unit DECIMAL(10, 2) NOT NULL,
+                total_price DECIMAL(10, 2) NOT NULL,
+                image_url TEXT,
+                created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+            );
+        `;
+
         try {
             await db`ALTER TABLE products ALTER COLUMN image_url DROP NOT NULL`;
             await db`ALTER TABLE products ADD COLUMN IF NOT EXISTS fit_mode TEXT DEFAULT 'cover'`;
             await db`ALTER TABLE products ADD COLUMN IF NOT EXISTS is_public BOOLEAN DEFAULT TRUE`;
             await db`ALTER TABLE products ADD COLUMN IF NOT EXISTS media JSONB DEFAULT '[]'`;
+
+            await db`ALTER TABLE sales ADD COLUMN IF NOT EXISTS image_url TEXT`;
 
             await db`
                 UPDATE products 
@@ -98,7 +114,7 @@ export async function uploadProduct(formData) {
         if (youtubeUrlsRaw) {
             const urls = youtubeUrlsRaw.split(",").map(u => u.trim()).filter(Boolean);
             for (const url of urls) {
-                const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/;
+                const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=|shorts\/)([^#\&\?]*).*/;
                 const match = url.match(regExp);
                 const id = (match && match[2].length === 11) ? match[2] : null;
 
@@ -109,7 +125,7 @@ export async function uploadProduct(formData) {
         }
 
         const ALLOWED_TYPES = ["image/jpeg", "image/png", "image/webp", "video/mp4", "video/webm", "video/quicktime"];
-        const MAX_FILE_SIZE = 500 * 1024 * 1024; // 500MB
+        const MAX_FILE_SIZE = 500 * 1024 * 1024;
 
         for (const file of photos) {
             if (!(file instanceof File) || file.size === 0) continue;
@@ -203,5 +219,53 @@ export async function deleteProduct(id) {
         if (error.message === "Unauthorized") return { error: "Authentication required" };
         console.error("Delete error:", error);
         return { error: "Failed to delete product." };
+    }
+}
+
+export async function recordSale(description, quantity, priceUnit, imageUrl) {
+    try {
+        await checkAuth();
+        await initDb();
+        const totalPrice = (quantity * priceUnit).toFixed(2);
+
+        await db`
+            INSERT INTO sales (description, quantity, price_unit, total_price, image_url)
+            VALUES (${description}, ${quantity}, ${priceUnit}, ${totalPrice}, ${imageUrl || null})
+        `;
+
+        revalidatePath("/admin/sales");
+        return { success: true };
+    } catch (error) {
+        if (error.message === "Unauthorized") return { error: "Authentication required" };
+        console.error("Record sale error:", error);
+        return { error: "Failed to record sale." };
+    }
+}
+
+export async function getSales() {
+    try {
+        await checkAuth();
+        await initDb();
+        const { rows } = await db`SELECT * FROM sales ORDER BY created_at DESC`;
+        return rows;
+    } catch (error) {
+        if (error.message === "Unauthorized") return [];
+        console.error("Get sales error:", error);
+        return [];
+    }
+}
+
+export async function deleteSale(id) {
+    try {
+        await checkAuth();
+        await initDb();
+        await db`DELETE FROM sales WHERE id = ${id}`;
+
+        revalidatePath("/admin/sales");
+        return { success: true };
+    } catch (error) {
+        if (error.message === "Unauthorized") return { error: "Authentication required" };
+        console.error("Delete sale error:", error);
+        return { error: "Failed to delete sale record." };
     }
 }

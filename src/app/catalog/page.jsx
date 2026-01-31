@@ -81,13 +81,9 @@ export default function CatalogPage() {
                                     />
                                     {product.media && (product.media.length > 1 || product.media.some(m => m.type === 'video' || m.type === 'youtube')) && (
                                         <Box sx={styles.mediaPill}>
-                                            {(product.media.some(m => m.type === 'video') || product.media.some(m => m.type === 'youtube')) && (
+                                            {product.media.some(m => m.type === 'video' || m.type === 'youtube') && (
                                                 <Box sx={styles.mediaIconWrapper}>
-                                                    {product.media.some(m => m.type === 'video') ? (
-                                                        <PlayCircleOutlineIcon sx={styles.mediaBadgeIcon} />
-                                                    ) : (
-                                                        <YouTubeIcon sx={styles.mediaBadgeIcon} />
-                                                    )}
+                                                    <PlayCircleOutlineIcon sx={styles.mediaBadgeIcon} />
                                                 </Box>
                                             )}
                                             {product.media.length > 1 && (
