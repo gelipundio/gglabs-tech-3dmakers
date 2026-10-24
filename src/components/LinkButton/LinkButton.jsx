@@ -11,16 +11,20 @@ export default function LinkButton({
     icon: Icon,
     target,
     delay = 0,
+    onClick,
+    sx,
 }) {
     return (
         <Button
             component={Link}
             href={href}
             target={target}
-            sx={{
-                ...styles.button,
-                animationDelay: `${delay}ms`,
-            }}
+            onClick={onClick}
+            sx={[
+                styles.button,
+                { animationDelay: `${delay}ms` },
+                ...(Array.isArray(sx) ? sx : [sx]),
+            ]}
             className="fade-in"
         >
             <Box sx={styles.contentWrapper}>
