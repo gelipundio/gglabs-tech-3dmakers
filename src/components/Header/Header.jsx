@@ -3,7 +3,7 @@ import Typography from "@mui/material/Typography";
 import Image from "next/image";
 import styles from "./styles";
 
-export default function Header({ size = "medium", sx = {} }) {
+export default function Header({ size = "medium", showTitle = true, sx = {} }) {
     const isSmall = size === "small";
 
     return (
@@ -26,16 +26,22 @@ export default function Header({ size = "medium", sx = {} }) {
                     />
                 </Box>
             )}
-            <Typography
-                variant={isSmall ? "h6" : "h1"}
-                sx={isSmall ? styles.titleSmall : styles.title}
-            >
-                3D Makers
-            </Typography>
+            {showTitle && (
+                <Typography
+                    variant={isSmall ? "h6" : "h1"}
+                    sx={isSmall ? styles.titleSmall : styles.title}
+                >
+                    3D Makers
+                </Typography>
+            )}
             {!isSmall && (
                 <Typography variant="body1" sx={styles.description}>
-                    by GG Labs
-                    <br />
+                    {showTitle && (
+                        <>
+                            by GG Labs
+                            <br />
+                        </>
+                    )}
                     <Box component="span" sx={styles.tagline}>
                         Prototyping • Design • Production
                     </Box>

@@ -12,15 +12,6 @@ const styles = {
         pb: 4,
         gap: 2,
     },
-    linksStack: {
-        width: "100%",
-        padding: 0,
-        margin: 0,
-        gap: 0,
-    },
-    catalogLink: {
-        mb: 2
-    }
 };
 
 export default styles;
