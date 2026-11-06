@@ -6,7 +6,7 @@ import MusicNoteIcon from "@mui/icons-material/MusicNote";
 import GridViewIcon from "@mui/icons-material/GridView";
 import ChatIcon from "@mui/icons-material/Chat";
 import YouTubeIcon from "@mui/icons-material/YouTube";
-import CelebrationIcon from "@mui/icons-material/Celebration";
+import ParkIcon from "@mui/icons-material/Park";
 import CasinoIcon from "@mui/icons-material/Casino";
 import LinkButton from "@/components/LinkButton/LinkButton";
 import styles from "./styles";
@@ -17,8 +17,8 @@ const RULETA_URL = "https://calculator.gg-labs.tech/ruleta/fiesta-bazar";
 // Catalog is empty for now; set to true to show the button again.
 const SHOW_CATALOG = false;
 
-// Seasonal button shows through the end of Nov 5 (Guadalajara time, UTC-6).
-const BAZAR_ENDS_AT = new Date("2026-11-06T00:00:00-06:00").getTime();
+// Seasonal button shows through the end of Mon Nov 9 (Guadalajara time, UTC-6).
+const BAZAR_ENDS_AT = new Date("2026-11-10T00:00:00-06:00").getTime();
 
 // Remembers whether the visitor clicked Instagram or TikTok, across reloads.
 const SOCIAL_KEY = "gglabs:social-clicked";
@@ -65,10 +65,10 @@ export default function LandingLinks() {
         <Stack spacing={0} sx={styles.linksStack}>
             {showBazar && (
                 <LinkButton
-                    label="Bazar de Navidad y Halloween"
+                    label="Bazar de Navidad"
                     href={BAZAR_URL}
                     target="_blank"
-                    icon={CelebrationIcon}
+                    icon={ParkIcon}
                     sx={styles.seasonalLink}
                 />
             )}

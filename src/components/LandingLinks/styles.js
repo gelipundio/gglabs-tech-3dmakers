@@ -10,6 +10,11 @@ const ruletaGlow = keyframes`
     50% { box-shadow: 0 0 28px rgba(30, 144, 255, 0.65); }
 `;
 
+const snowFall = keyframes`
+    from { background-position: 0 0, 15px 20px; }
+    to { background-position: 0 60px, 15px 90px; }
+`;
+
 const styles = {
     linksStack: {
         width: "100%",
@@ -17,18 +22,39 @@ const styles = {
         margin: 0,
         gap: 0,
     },
-    // Festive gradient: Halloween orange into Christmas red and green.
+    // Christmas: red-to-green gradient, gold trim, and gently falling snow.
     seasonalLink: {
-        background: "linear-gradient(135deg, #ff7a18 0%, #c62828 55%, #2e7d32 100%)",
-        borderColor: "transparent",
+        position: "relative",
+        overflow: "hidden",
+        isolation: "isolate",
+        background: "linear-gradient(135deg, #b71c1c 0%, #c62828 45%, #1b5e20 100%)",
+        border: "1px solid #f4c430",
+        boxShadow: "0 0 16px rgba(244, 196, 48, 0.35)",
         color: "#fff",
         fontWeight: 700,
+        "& .MuiSvgIcon-root": { color: "#fff" },
         "& .arrow-icon": { opacity: 0.9 },
+        // Two layers of snow dots that drift downward and repeat.
+        "&::before": {
+            content: '""',
+            position: "absolute",
+            inset: 0,
+            backgroundImage:
+                "radial-gradient(circle, rgba(255,255,255,0.9) 1.5px, transparent 2px), radial-gradient(circle, rgba(255,255,255,0.6) 1px, transparent 1.5px)",
+            backgroundSize: "60px 60px, 35px 35px",
+            backgroundPosition: "0 0, 15px 20px",
+            animation: `${snowFall} 6s linear infinite`,
+            pointerEvents: "none",
+            zIndex: -1,
+        },
         "&:hover": {
-            background: "linear-gradient(135deg, #ff8f3a 0%, #d84343 55%, #3c9442 100%)",
+            background: "linear-gradient(135deg, #d32f2f 0%, #e53935 45%, #2e7d32 100%)",
             color: "#fff",
-            borderColor: "transparent",
-            "& .MuiSvgIcon-root": { color: "#fff" },
+            borderColor: "#ffd95a",
+            "& .MuiSvgIcon-root": { color: "#ffd95a" },
+        },
+        "@media (prefers-reduced-motion: reduce)": {
+            "&::before": { animation: "none" },
         },
     },
     // Blue light spinning around the border, plus a soft pulsing glow.
